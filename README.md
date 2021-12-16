@@ -6,3 +6,13 @@ Les ransomware sont une famille de logiciels malveillants dont l’objectif est,
 L’objectif de ce projet est de réaliser un ransomware relativement simple qui sera en mesure de chiffrer le contenu d’un répertoire. Le chemin du répertoire sera passé en paramètre et la clé de déchiffrement sera envoyée via le réseau.
 
 Le ransomware fonctionne sur la distribution Linux. Une fois celui-ci lancé sur la machinede la victime, une clé sera générée et utilisée pour chiffrer le contenu d’un répertoire. Une fois le chiffrement terminé, la clé sera envoyée à l’aide des sockets sur la machine de l’attaquant. La librairie ransomlib.h et ransomlib.c est utilisée, qui se repose sur openssl, implémentant une série d'algorithmes de chiffrement.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Pour compiler le programme: 
+gcc -o ransom ransom.c ransomlib.c -lcrypto
+
+Pour lancer un serveur qui écoute pour récupérer la clé (le numéro de port au choix)
+nc -lu -v -p 8888 
+
+Le dossier "important" contient une série de dossiers et fichiers sur lesquel vous pouvez tester votre programme. 
