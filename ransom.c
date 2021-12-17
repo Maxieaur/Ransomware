@@ -21,7 +21,3 @@ int main (int argc, char * argv[])
 {
 	printf("Oui\n");
 }
-
-
-bite
-
