@@ -18,6 +18,6 @@ int bytes_to_hexa(const unsigned char bytes_string[], char *hex_string, int size
 void hexa_to_bytes(char hex_string[], unsigned char val[], int size);
 int encrypt(unsigned char *key, unsigned char *iv, char* plaintext_file);
 int decrypt(unsigned char *key, unsigned char *iv, char* cipher_file);
-
+ttttttttttttt
 
 
