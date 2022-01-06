@@ -1,4 +1,4 @@
-# Ransomware---2021-2022
+# Ransomware 2021-2022
 L’objectif de ce projet est de développer un ransomware, afin de mieux comprendre, à la fois le fonctionnement de ce type de programme, mais également de pouvoir appliquer les concepts vus au cours en utilisant le langage C pour réaliser le projet.
 
 Les ransomware sont une famille de logiciels malveillants dont l’objectif est, en général, déchiffrer des donn´ees sensibles sur un système afin d’obtenir une rançon en échange de la clé qui permettra de déchiffrer ces données. La maximisation des gains est donc primordiale pour l’attaquant et l’implémentation du ransomware sera impactée par cet objectif.
