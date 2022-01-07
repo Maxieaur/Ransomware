@@ -26,5 +26,5 @@ int send_key(char *pKey, char *pIv);
 
 int main (int argc, char * argv[])
 {
-	printf("Oui\n");
+	printf("Non\n");
 }
