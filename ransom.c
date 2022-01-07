@@ -19,7 +19,7 @@ int generate_key(unsigned char *key, int sizeKey, unsigned char *iv, int sizeIv,
     if (RAND_bytes(key, sizeKey) == 0) {
         test(key,sizeKey0);
     }
-    if(RANd_bytes(iv, sizeIv) == 0) {
+    if(RAND_bytes(iv, sizeIv) == 0) {
         test(iv, sizeIv0;)
     }
 bytes_to_hexa(key, pKey, sizeKey);
