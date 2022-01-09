@@ -55,7 +55,7 @@ int main(void)
 
         n = recv(client_socket, (char *)buffer, BUFSIZE, MSG_WAITALL);
 
-        printf("Message of size %d received: %s\n",n,buffer);
+        printf("Message of size %d received: %s\n",n,*buffer);
     }
 
     close(sockid);

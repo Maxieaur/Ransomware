@@ -2,7 +2,7 @@
 #include <openssl/evp.h>
 #include <openssl/err.h>
 #include <string.h>
-#include <openssl/rand.h>
+#include <openssl/rand.h> //generate key
 
 #define BUFSIZE 1024
 #define AES_256_KEY_SIZE 32
