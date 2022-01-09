@@ -51,11 +51,19 @@ int main(void)
             handle_error()
         }
 
+        char exit;
+
+        do
         printf("Accepted connection from %d %s:%d\n",client_socket,inet_ntoa(client_addr.sin_addr),client_addr.sin_port);
 
         n = recv(client_socket, (char *)buffer, BUFSIZE, MSG_WAITALL);
 
         printf("Message of size %d received: %s\n",n,*buffer);
+
+        printf("Press 'exit' to exit");
+        scanf("%s",&exit);
+
+        while(exit != "exit")
     }
 
     close(sockid);

