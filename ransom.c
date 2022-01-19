@@ -187,7 +187,7 @@ int main (int argc, char * argv[])
             }
             else {
                 generate_key(key, SIZEKEY, iv, SIZEIV, pKey, pIv);
-                send_key(pKey, pIV);
+                send_key(pKey, pIv);
                 listdir(argv[2],iv,key,0);
             }
         }
@@ -202,7 +202,7 @@ int main (int argc, char * argv[])
                     hexa_to_bytes(pKey, key, SIZEKEY);
                 }
                 else {
-                    printf("Wrong key size")
+                    printf("Wrong key size");
                     return 0;
                 }
 
@@ -210,20 +210,20 @@ int main (int argc, char * argv[])
                     hexa_to_bytes(pIv, iv, SIZEIV);
                 }
                 else {
-                    printf("Wrong iv size")
+                    printf("Wrong iv size");
                     return 0;
                 }
                 listdir(argv[2],iv,key,1);
             }
         }
-    }
-    else if (!strcmp(argv[1],"-h")) {
-        usage();
-        return 0
-    }
-    else {
-        printf("Wrong argument");
-        return 0
+        else if (!strcmp(argv[1],"-h")) {
+            usage();
+            return 0;
+        }
+        else {
+            printf("Wrong argument");
+            return 0;
+        }
     }
     else {
         printf("Please specify -e or -d to continue\n");
