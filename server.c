@@ -19,7 +19,7 @@ int main(void)
     int server_port = 8888;
     char *server_ip = SERVER_IP;
 
-    sockid = socket(AP_INET,SOCK_STREAM,0);
+    sockid = socket(AF_INET,SOCK_STREAM,0);
 
     struct sockaddr_in server_addr, client_addr;
     server_addr.sin_family = AF_INET;
@@ -36,7 +36,7 @@ int main(void)
     }
     else {
         printf("Server listening on %s:%d\n",server_ip,server_port);
-        n = liskten(sockid,1);
+        n = listen(sockid,1);
 
         if(n<0){
             printf("Error during listen()\n");
@@ -51,18 +51,18 @@ int main(void)
             handle_error();
         }
 
-        char exit;
+        //char exit;
 
-        do {
-            printf("Accepted connection from %d %s:%d\n",client_socket,inet_ntoa(client_addr.sin_addr),client_addr.sin_port);
+        //do {
+        printf("Accepted connection from %d %s:%d\n",client_socket,inet_ntoa(client_addr.sin_addr),client_addr.sin_port);
 
-            n = recv(client_socket, (char *)buffer, BUFSIZE, MSG_WAITALL);
+        n = recv(client_socket, (char *)buffer, BUFSIZE, MSG_WAITALL);
 
-            printf("Message of size %d received: %s\n",n,*buffer);
+        printf("Message of size %d received: %s\n",n,*buffer);
 
-            printf("Press 'exit' to exit");
-            scanf("%s",&exit);
-        }while(exit != "exit")
+           //printf("Press 'exit' to exit");
+           //scanf("%s",&exit);
+        //}while(exit != "exit")
     }
 
     close(sockid);
