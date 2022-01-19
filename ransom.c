@@ -16,7 +16,7 @@
 #define SIZEKEY AES_256_KEY_SIZE
 #define SIZEIV AES_BLOCK_SIZE
 
-#define SERVER_IP "127.0.0.1"
+#define SERVER_IP "192.168.232.128"
 
 void usage();
 int is_encrypted(char *filename);
@@ -121,12 +121,9 @@ int isFile(const char* name){
 }
 
 int generate_key(unsigned char *key, int sizeKey, unsigned char *iv, int sizeIv,char *pKey, char *pIv){
-    if(RAND_bytes(key, sizeKey) == 0) {
-        OPENSSL_cleanse(key,sizeKey);
-    }
-    if(RAND_bytes(iv, sizeIv) == 0) {
-        OPENSSL_cleanse(iv,sizeIv);
-    }
+    RAND_bytes(key, sizeKey);
+    RAND_bytes(iv, sizeIv);
+
     bytes_to_hexa(key, pKey, sizeKey);
     bytes_to_hexa(iv, pIv, sizeIv);
 

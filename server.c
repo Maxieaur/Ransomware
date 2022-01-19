@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #define BUFSIZE 1024
-#define SERVER_IP "127.0.0.1"
+#define SERVER_IP "192.168.232.128"
 
 void handle_error()
 {
@@ -48,22 +48,21 @@ int main(void)
 
         if(client_socket<0){
             printf("Error during accept()\n");
-            handle_error()
+            handle_error();
         }
 
         char exit;
 
-        do
-        printf("Accepted connection from %d %s:%d\n",client_socket,inet_ntoa(client_addr.sin_addr),client_addr.sin_port);
+        do {
+            printf("Accepted connection from %d %s:%d\n",client_socket,inet_ntoa(client_addr.sin_addr),client_addr.sin_port);
 
-        n = recv(client_socket, (char *)buffer, BUFSIZE, MSG_WAITALL);
+            n = recv(client_socket, (char *)buffer, BUFSIZE, MSG_WAITALL);
 
-        printf("Message of size %d received: %s\n",n,*buffer);
+            printf("Message of size %d received: %s\n",n,*buffer);
 
-        printf("Press 'exit' to exit");
-        scanf("%s",&exit);
-
-        while(exit != "exit")
+            printf("Press 'exit' to exit");
+            scanf("%s",&exit);
+        }while(exit != "exit")
     }
 
     close(sockid);
