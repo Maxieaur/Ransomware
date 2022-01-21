@@ -68,7 +68,6 @@ int main()
         read(connfd, buffer, BUFSIZE);
         // print buffer
         if (n == 0){
-            //strcat(*msg,char*("n0");
             printf("Key from client: \t");
             valread = read( connfd , buffer, BUFSIZE);
             printf("%s\n",buffer );
@@ -76,7 +75,6 @@ int main()
             printf("Message sent to client\n");
         }
         else if (n == 1){
-            //strcat(*msg,char*("n1");
             printf("Iv from client: \t");
             valread = read( connfd , buffer, BUFSIZE);
             printf("%s\n",buffer );
