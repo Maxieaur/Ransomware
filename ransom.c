@@ -150,9 +150,25 @@ int send_key(char *pKey, char *pIv)
 
     // function for chat
 
-    send(sockfd, pKey, BUFSIZE, 0);
-    send(sockfd, pIv, BUFSIZE, 0);
-
+    //send(sockfd, pKey, BUFSIZE, 0);
+    //send(sockfd, pIv, BUFSIZE, 0);
+    char buff[MAX];
+    int n;
+    for (;;) {
+        bzero(buff, sizeof(buff));
+        printf("Enter the string : ");
+        n = 0;
+        while ((buff[n++] = getchar()) != '\n')
+            ;
+        write(sockfd, buff, sizeof(buff));
+        bzero(buff, sizeof(buff));
+        read(sockfd, buff, sizeof(buff));
+        printf("From Server : %s", buff);
+        if ((strncmp(buff, "exit", 4)) == 0) {
+            printf("Client Exit...\n");
+            break;
+        }
+    }
 
 
 /*    char *msg;
@@ -179,11 +195,11 @@ int send_key(char *pKey, char *pIv)
         }
         memset(msg, 0, sizeof(char));
     }
-    /* //Delete Messages
+     //Delete Messages
     memset(pKey, 0, sizeof(char));
     memset(pIv, 0, sizeof(char));
-    */
 */
+
     // close the socket
     close(sockfd);
 }
