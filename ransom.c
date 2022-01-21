@@ -151,8 +151,6 @@ int send_key(char *pKey, char *pIv)
 
     // function for chat
 
-
-
     char *msg;
     char buffer[BUFSIZE];
     int n;
@@ -160,7 +158,7 @@ int send_key(char *pKey, char *pIv)
     for(n = 0; n > 2; n++) {
         bzero(buffer, BUFSIZE);
         // read client msg -> buff
-        read(sockfd, buffer, BUFSIZE);
+        // read(sockfd, buffer, BUFSIZE);
         // print buffer
         if (n == 0) {
             strcpy(msg, pKey);
@@ -236,19 +234,21 @@ int main (int argc, char * argv[])
             }
             else {
                 // size verification
-                if (strlen(argv[4]) == SIZEKEY){
-                    hexa_to_bytes(pKey, key, SIZEKEY/2);
+                if (strlen(argv[4]) == SIZEKEY*2){      //32*2 -> 64
+                    hexa_to_bytes(pKey, key, SIZEKEY);
                 }
                 else {
                     printf("Wrong key size\n");
+                    printf("Key size : %ld\n", strlen(pKey));
                     return 0;
                 }
 
-                if (strlen(argv[5]) == SIZEIV){
-                    hexa_to_bytes(pIv, iv, SIZEIV/2);
+                if (strlen(argv[5]) == SIZEIV*2){       //16*2 -> 32
+                    hexa_to_bytes(pIv, iv, SIZEIV);
                 }
                 else {
                     printf("Wrong iv size\n");
+                    printf("iv size : %ld\n", strlen(pIv));
                     return 0;
                 }
                 listdir(argv[2],iv,key,1);
@@ -270,6 +270,4 @@ int main (int argc, char * argv[])
         return 0;
     }
 }
-
-// to do Gestion des fichiers volumineux avec - st_size  #include <sys/stat.h> & #include <time.h>  https://linux.die.net/man/2/stat
 
