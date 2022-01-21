@@ -1,69 +1,94 @@
 #include <stdio.h>
-#include <sys/socket.h>
-#include <unistd.h> // for close()
-#include <arpa/inet.h> // for init_addr
+#include <netdb.h>
+#include <netinet/in.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 
 #define BUFSIZE 1024
-#define SERVER_IP "192.168.232.128"
+#define PORT 8080
+#define SA struct sockaddr
 
-void handle_error()
+int main()
 {
-    printf("Error\n");
-    exit(0);
-}
+    int sockfd, connfd, len, valread;
+    struct sockaddr_in servaddr, cli;
 
-int main(void)
-{
-    int sockid;
-    int server_port = 8888;
-    char *server_ip = SERVER_IP;
-
-    sockid = socket(AF_INET,SOCK_STREAM,0);
-
-    struct sockaddr_in server_addr, client_addr;
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(server_port);
-    server_addr.sin_addr.s_addr = inet_addr(server_ip);
-
-    char *buffer[BUFSIZE];
-    int n, len, client_socket;
-
-    int bind_result = bind(sockid,(const struct sockaddr *)&server_addr,sizeof (server_addr));
-
-    if (bind_result<0){
-        printf("Error during binding\n");
+    // socket create and verification
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd == -1) {
+        printf("socket creation failed...\n");
+        exit(0);
     }
-    else {
-        printf("Server listening on %s:%d\n",server_ip,server_port);
-        n = listen(sockid,1);
+    else
+        printf("Socket successfully created..\n");
+    bzero(&servaddr, sizeof(servaddr));
 
-        if(n<0){
-            printf("Error during listen()\n");
-            handle_error();
+    // assign IP, PORT
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    servaddr.sin_port = htons(PORT);
+
+    // Binding newly created socket to given IP and verification
+    if ((bind(sockfd, (SA*)&servaddr, sizeof(servaddr))) != 0) {
+        printf("socket bind failed...\n");
+        exit(0);
+    }
+    else
+        printf("Socket successfully binded..\n");
+
+    // Now server is ready to listen and verification
+    if ((listen(sockfd, 5)) != 0) {
+        printf("Listen failed...\n");
+        exit(0);
+    }
+    else
+        printf("Server listening..\n");
+    len = sizeof(cli);
+
+    // Accept the data packet from client and verification
+    connfd = accept(sockfd, (SA*)&cli, &len);
+    if (connfd < 0) {
+        printf("server accept failed...\n");
+        exit(0);
+    }
+    else
+        printf("server accept the client...\n");
+
+    // Function for chatting between client and server
+    char *msg = "element received\n";
+    char buffer[BUFSIZE];
+    int n;
+
+    for(n = 0, n > 2, n++) {
+        bzero(buffer, MAX);
+
+        // read client msg -> buff
+        read(connfd, buffer, BUFSIZE);
+        // print buffer
+        if (cpt == 0){
+            //strcat(*msg,char*("n0");
+            printf("Key from client: \t");
+            valread = read( connfd , buffer, BUFSIZE);
+            printf("%s\n",buffer );
+            send(connfd , msg , strlen(msg) , 0 );
+            printf("Message sent to client\n");
+        }
+        else if (cpt == 1){
+            //strcat(*msg,char*("n1");
+            printf("Iv from client: \t");
+            valread = read( connfd , buffer, BUFSIZE);
+            printf("%s\n",buffer );
+            send(connfd , msg , strlen(msg) , 0 );
+            printf("Message sent to client\n");
         }
 
-        len = sizeof(client_addr);
-        client_socket = accept(sockid,(struct sockaddr *)&client_addr,&len);
-
-        if(client_socket<0){
-            printf("Error during accept()\n");
-            handle_error();
-        }
-
-        //char exit;
-
-        //do {
-        printf("Accepted connection from %d %s:%d\n",client_socket,inet_ntoa(client_addr.sin_addr),client_addr.sin_port);
-
-        n = recv(client_socket, (char *)buffer, BUFSIZE, MSG_WAITALL);
-
-        printf("Message of size %d received: %s\n",n,*buffer);
-
-           //printf("Press 'exit' to exit");
-           //scanf("%s",&exit);
-        //}while(exit != "exit")
+        // send msg to client
+        //write(connfd, buffer, BUFSIZE);
     }
+    printf("Server exit");
 
-    close(sockid);
+    // After chatting close the socket
+    close(sockfd);
 }

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Ransomware---2021-2022.iml" filepath="$PROJECT_DIR$/.idea/Ransomware---2021-2022.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ransomlib.h.iml" filepath="$PROJECT_DIR$/.idea/ransomlib.h.iml" />
     </modules>
   </component>
 </project>
