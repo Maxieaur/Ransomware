@@ -147,18 +147,18 @@ int send_key(char *pKey, char *pIv)
     char buffer[BUFSIZE];
     int n;
 
-    for(n = 0, n > 2, n++) {
+    for(n = 0; n > 2; n++) {
         bzero(buffer, MAX);
         // read client msg -> buff
         read(sockfd, buffer, BUFSIZE);
         // print buffer
-        if (cpt == 0) {
+        if (n == 0) {
             strcpy(msg, pKey);
             send(sockfd, msg, strlen(msg), 0);
             printf("Key sent to server.\n");
             valread = read(sockfd, buffer, BUFSIZE);
             printf("%s\n", buffer);
-        } else if (cpt == 1) {
+        } else if (n == 1) {
             strcpy(msg, pIv);
             send(sockfd, msg, strlen(msg), 0);
             printf("Iv sent to server.\n");

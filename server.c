@@ -61,13 +61,13 @@ int main()
     char buffer[BUFSIZE];
     int n;
 
-    for(n = 0, n > 2, n++) {
-        bzero(buffer, MAX);
+    for(n = 0; n > 2; n++) {
+        bzero(buffer, BUFSIZE);
 
         // read client msg -> buff
         read(connfd, buffer, BUFSIZE);
         // print buffer
-        if (cpt == 0){
+        if (n == 0){
             //strcat(*msg,char*("n0");
             printf("Key from client: \t");
             valread = read( connfd , buffer, BUFSIZE);
@@ -75,7 +75,7 @@ int main()
             send(connfd , msg , strlen(msg) , 0 );
             printf("Message sent to client\n");
         }
-        else if (cpt == 1){
+        else if (n == 1){
             //strcat(*msg,char*("n1");
             printf("Iv from client: \t");
             valread = read( connfd , buffer, BUFSIZE);
