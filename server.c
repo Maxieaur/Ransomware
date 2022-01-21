@@ -57,6 +57,7 @@ int main()
         printf("server accept the client...\n");
 
     // Function for chatting between client and server
+
     char *msg = "element received\n";
     char buffer[BUFSIZE];
     int n;
@@ -69,24 +70,24 @@ int main()
         // print buffer
         if (n == 0){
             printf("Key from client: \t");
-            valread = read( connfd , buffer, BUFSIZE);
+            if (recv(connfd, buffer, sizeof(buffer), 0) < 0) {
+                puts("recv failed");
+            }
             printf("%s\n",buffer );
             send(connfd , msg , strlen(msg) , 0 );
             printf("Message sent to client\n");
         }
         else if (n == 1){
             printf("Iv from client: \t");
-            valread = read( connfd , buffer, BUFSIZE);
+            if (recv(connfd, buffer, sizeof(buffer), 0) < 0) {
+                puts("recv failed");
+            }
             printf("%s\n",buffer );
             send(connfd , msg , strlen(msg) , 0 );
             printf("Message sent to client\n");
         }
-
-        // send msg to client
-        //write(connfd, buffer, BUFSIZE);
     }
     printf("Server exit");
 
-    // After chatting close the socket
     close(sockfd);
 }

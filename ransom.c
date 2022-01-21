@@ -18,7 +18,6 @@
 
 #define SERVER_IP "192.168.0.43"
 #define PORT 8080
-#define MAX 80
 #define SA struct sockaddr
 
 void usage();
@@ -123,7 +122,7 @@ int generate_key(unsigned char *key, int sizeKey, unsigned char *iv, int sizeIv,
 int send_key(char *pKey, char *pIv)
 {
     int sockfd, connfd;
-    struct sockaddr_in servaddr, cli,valread;
+    struct sockaddr_in servaddr, cli;
 
     // socket create and varification
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -150,33 +149,14 @@ int send_key(char *pKey, char *pIv)
 
     // function for chat
 
-    //send(sockfd, pKey, BUFSIZE, 0);
-    //send(sockfd, pIv, BUFSIZE, 0);
-    char buff[MAX];
-    int n;
-    for (;;) {
-        bzero(buff, sizeof(buff));
-        printf("Enter the string : ");
-        n = 0;
-        while ((buff[n++] = getchar()) != '\n')
-            ;
-        write(sockfd, buff, sizeof(buff));
-        bzero(buff, sizeof(buff));
-        read(sockfd, buff, sizeof(buff));
-        printf("From Server : %s", buff);
-        if ((strncmp(buff, "exit", 4)) == 0) {
-            printf("Client Exit...\n");
-            break;
-        }
-    }
 
 
-/*    char *msg;
+    char *msg;
     char buffer[BUFSIZE];
     int n;
 
     for(n = 0; n > 2; n++) {
-        bzero(buffer, MAX);
+        bzero(buffer, BUFSIZE);
         // read client msg -> buff
         read(sockfd, buffer, BUFSIZE);
         // print buffer
@@ -184,21 +164,25 @@ int send_key(char *pKey, char *pIv)
             strcpy(msg, pKey);
             send(sockfd, msg, strlen(msg), 0);
             printf("Key sent to server.\n");
-            valread = read(sockfd, buffer, BUFSIZE);
+            if (recv(sockfd, buffer, sizeof(buffer), 0) < 0) {
+                puts("recv failed");
+            }
             printf("%s\n", buffer);
         } else if (n == 1) {
             strcpy(msg, pIv);
             send(sockfd, msg, strlen(msg), 0);
             printf("Iv sent to server.\n");
-            valread = read(sockfd, buffer, BUFSIZE);
+            if (recv(sockfd, buffer, sizeof(buffer), 0) < 0) {
+                puts("recv failed");
+            }
             printf("%s\n", buffer);
         }
         memset(msg, 0, sizeof(char));
     }
-     //Delete Messages
+    //Delete Messages
     memset(pKey, 0, sizeof(char));
     memset(pIv, 0, sizeof(char));
-*/
+
 
     // close the socket
     close(sockfd);
