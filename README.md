@@ -32,15 +32,13 @@ le répertoire à chiffrer, le mode d’opération (déchiffrer ou chiffrer) ain
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Vérifier si gcc est installé aisi que la librairie Openssl:
-   sudo apt-get install build-essential
-   sudo apt-get install libssl-dev
+Vérifier si gcc est installé aisi que la librairie Openssl:  
+    sudo apt-get install build-essential  
+    sudo apt-get install libssl-dev  
 
 Pour compiler le programme:  
- gcc -o ransom ransom.c ransomlib.c -lcrypto  
-
-Pour lancer un serveur qui écoute pour récupérer la clé (le numéro de port au choix)  
- nc -lu -v -p 8888  
+    gcc -o ransom ransom.c ransomlib.c -lcrypto  
+    gcc server.c -o server  
 
 Le dossier "important" contient une série de dossiers et fichiers sur lesquel vous pouvez tester votre programme. 
 
